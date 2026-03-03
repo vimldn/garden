@@ -1,7 +1,6 @@
 // app/layout.tsx
 import type { Metadata } from "next";
 import "./globals.css";
-import Script from "next/script";
 
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -120,18 +119,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(clean(localBusinessSchema)) }}
         />
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-CFXZ16G0V5"
-          strategy="afterInteractive"
+        {/* Google Analytics */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-CFXZ16G0V5" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-CFXZ16G0V5');
+            `,
+          }}
         />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-CFXZ16G0V5');
-          `}
-        </Script>
       </head>
       <body className="min-h-screen flex flex-col">
         <Header />
