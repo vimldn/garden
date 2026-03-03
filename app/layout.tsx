@@ -120,20 +120,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(clean(localBusinessSchema)) }}
         />
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-CFXZ16G0V5"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-CFXZ16G0V5');
+          `}
+        </Script>
       </head>
-
-      <Script
-        src="https://www.googletagmanager.com/gtag/js?id=G-CFXZ16G0V5"
-        strategy="afterInteractive"
-      />
-      <Script id="google-analytics" strategy="afterInteractive">
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-CFXZ16G0V5');
-        `}
-      </Script>
       <body className="min-h-screen flex flex-col">
         <Header />
         <main className="flex-grow">{children}</main>
