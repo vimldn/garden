@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { MapPin } from 'lucide-react';
 import type { Location } from '@/data/locations';
 import { locations } from '@/data/locations';
@@ -13,9 +12,7 @@ interface AreasGridProps {
 }
 
 /**
- * Displays sub-locations as a grid of internal links.
- * - On service x location pages: links go to the same service in sibling locations
- * - On location pages: links go to the location page (or stay as text if no dedicated page)
+ * Displays sub-locations as a non-clickable grid.
  */
 export function AreasGrid({ location, serviceSlug, title }: AreasGridProps) {
   const heading = title || `Areas Near ${location.name} We Cover`;
@@ -33,27 +30,17 @@ export function AreasGrid({ location, serviceSlug, title }: AreasGridProps) {
         }
       </p>
 
-      {/* Sub-locations as linked grid */}
+      {/* Sub-locations as static grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-8">
-        {location.subLocations.map((sub) => {
-          // If on a service page, link to service/serviceSlug/locationSlug
-          // Sub-locations don't have their own pages yet, so link to the parent location's service page
-          const href = serviceSlug
-            ? `/services/${serviceSlug}/${location.slug}/`
-            : `/locations/${location.slug}/`;
-
-          return (
-            <Link
-              key={sub.slug}
-              href={href}
-              className="flex items-center gap-2 p-3 bg-white rounded-lg border border-gray-100 hover:border-brand-300 hover:bg-brand-50 transition-all group"
-              title={serviceSlug ? `Garden rooms in ${sub.name}, ${location.name}` : `Garden rooms in ${sub.name}`}
-            >
-              <div className="w-1.5 h-1.5 rounded-full bg-brand-500 flex-shrink-0 group-hover:scale-125 transition-transform" />
-              <span className="text-sm font-medium text-gray-700 group-hover:text-brand-700">{sub.name}</span>
-            </Link>
-          );
-        })}
+        {location.subLocations.map((sub) => (
+          <div
+            key={sub.slug}
+            className="flex items-center gap-2 p-3 bg-white rounded-lg border border-gray-100"
+          >
+            <div className="w-1.5 h-1.5 rounded-full bg-brand-500 flex-shrink-0" />
+            <span className="text-sm font-medium text-gray-700">{sub.name}</span>
+          </div>
+        ))}
       </div>
 
       {/* Sibling major locations */}
@@ -61,14 +48,13 @@ export function AreasGrid({ location, serviceSlug, title }: AreasGridProps) {
         <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Other London Areas</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {siblingLocations.map(loc => (
-            <Link
+            <div
               key={loc.id}
-              href={serviceSlug ? `/services/${serviceSlug}/${loc.slug}/` : `/locations/${loc.slug}/`}
-              className="flex items-center gap-2 p-3 bg-white rounded-lg border border-gray-100 hover:border-brand-300 hover:bg-brand-50 transition-all group"
+              className="flex items-center gap-2 p-3 bg-white rounded-lg border border-gray-100"
             >
               <MapPin className="w-4 h-4 text-brand-500 flex-shrink-0" />
-              <span className="text-sm font-medium text-gray-700 group-hover:text-brand-700">{loc.name}</span>
-            </Link>
+              <span className="text-sm font-medium text-gray-700">{loc.name}</span>
+            </div>
           ))}
         </div>
       </div>
